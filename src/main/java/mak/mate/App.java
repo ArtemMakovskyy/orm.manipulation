@@ -1,33 +1,66 @@
 package mak.mate;
 
 import mak.mate.dao.AddressDao;
-import mak.mate.dao.UserDao;
+import mak.mate.dao.CountryDao;
+import mak.mate.dao.LoginDao;
+import mak.mate.dao.PassportDao;
+import mak.mate.dao.PersonDao;
 import mak.mate.dao.impl.AddressDaoImpl;
-import mak.mate.dao.impl.UserDaoImpl;
+import mak.mate.dao.impl.CountryDaoImpl;
+import mak.mate.dao.impl.LoginDaoImpl;
+import mak.mate.dao.impl.PassportDaoImpl;
+import mak.mate.dao.impl.PersonDaoImpl;
 import mak.mate.model.Address;
-import mak.mate.model.User;
+import mak.mate.model.Country;
+import mak.mate.model.Login;
+import mak.mate.model.Passport;
+import mak.mate.model.Person;
 import mak.mate.util.HibernateUtil;
 import org.hibernate.SessionFactory;
 
 public class App {
-   private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    private static UserDao userDao = new UserDaoImpl(sessionFactory);
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     private static AddressDao addressDao = new AddressDaoImpl(sessionFactory);
+    private static LoginDao loginDao = new LoginDaoImpl(sessionFactory);
+    private static PassportDao passportDao = new PassportDaoImpl(sessionFactory);
+    private static PersonDao personDao = new PersonDaoImpl(sessionFactory);
+    private static CountryDao countryDao = new CountryDaoImpl(sessionFactory);
+
 
     public static void main(String[] args) {
-        firstTemplate();
         myPractice();
     }
 
     private static void myPractice() {
-
+        Person personBobAfterAddPassport = createPersonBobAfterAddPassport();
     }
 
-    private static void firstTemplate() {
-        User bob = new User("Bob");
-        bob.setAddress(new Address("Kyiv", "Shevchenka st.", bob));
-        userDao.add(bob);
-        User userBobFromDb = userDao.getById(1L).get();
-        System.out.println(userBobFromDb);
+    private static Person createPersonBobAfterAddPassport() {
+        Person bob = new Person("Bob", "Petrov", 25);
+        personDao.add(bob);
+
+        Address address = new Address("Kyiv","Shevchenko st.");
+        address.setPerson(bob);
+        address.setCountry(new Country("Ukraine"));
+        addressDao.add(address);
+
+        Passport passport = new Passport();
+        passport.setNumber("passport bob 111");
+        passport.setPerson(bob);
+        passportDao.add(passport);
+
+        Login login = new Login();
+        login.setEmail("bob@gmail.com");
+        login.setPassword("bob123");
+        login.setPerson(bob);
+        loginDao.add(login);
+
+
+
+        System.out.println(">>> personDao.getById: >> " + personDao.getById(bob.getId()));
+//        System.out.println(">>> passportDao.getById: >> " + passportDao.getById(passport.getId()));
+        return bob;
     }
+
+
 }

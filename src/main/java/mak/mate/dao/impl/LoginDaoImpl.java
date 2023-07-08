@@ -1,8 +1,9 @@
 package mak.mate.dao.impl;
 
 import mak.mate.dao.AbstractDao;
-import mak.mate.dao.PersonDao;
-import mak.mate.model.Person;
+import mak.mate.dao.LoginDao;
+import mak.mate.model.Login;
+import mak.mate.model.Passport;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,13 +12,13 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonDaoImpl extends AbstractDao implements PersonDao {
-    public PersonDaoImpl(SessionFactory sessionFactory) {
+public class LoginDaoImpl  extends AbstractDao implements LoginDao {
+    public LoginDaoImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
     @Override
-    public Person add(Person entity) {
+    public Login add(Login entity) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -29,7 +30,7 @@ public class PersonDaoImpl extends AbstractDao implements PersonDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't create person " + entity);
+            throw new RuntimeException("Can't create login " + entity);
         } finally {
             if (session != null) {
                 session.close();
@@ -37,24 +38,23 @@ public class PersonDaoImpl extends AbstractDao implements PersonDao {
         }
         return entity;
     }
-
     @Override
-    public Optional<Person> getById(Long id) {
+    public Optional<Login> getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Person person = session.get(Person.class, id);
-            return Optional.ofNullable(person);
+            Login login = session.get(Login.class, id);
+            session.createQuery("from Passport p where p.id = :id", Login.class).setParameter("id",id);
+            return Optional.ofNullable(login);
         } catch (Exception e) {
-            throw new RuntimeException("Can't get person by id " + id, e);
+            throw new RuntimeException("Can't get login by id " + id, e);
         }
     }
-
     @Override
-    public List<Person> getAll() {
+    public List<Login> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Person> fromUser = session.createQuery("from Person ", Person.class);
-            return fromUser.getResultList();
+            Query<Login> fromLogin = session.createQuery("from Login ", Login.class);
+            return fromLogin.getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Can't  get all persons ", e);
+            throw new RuntimeException("Can't  get all logins ", e);
         }
     }
 }

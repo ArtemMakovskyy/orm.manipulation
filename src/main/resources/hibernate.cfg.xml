@@ -8,10 +8,11 @@
         <property name="show_sql">true</property>
         <property name="hbm2ddl.auto">create-drop</property>
 
-        <mapping class="mak.mate.model.User"/>
+        <mapping class="mak.mate.model.Country"/>
         <mapping class="mak.mate.model.Address"/>
         <mapping class="mak.mate.model.Person"/>
         <mapping class="mak.mate.model.Passport"/>
+        <mapping class="mak.mate.model.Login"/>
 
     </session-factory>
 </hibernate-configuration>

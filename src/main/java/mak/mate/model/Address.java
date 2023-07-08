@@ -1,77 +1,45 @@
 package mak.mate.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "addresses")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Address {
     @Id
     private Long id;
-    private String City;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Country country;
+    private String city;
     private String street;
     @OneToOne()
-//    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     @MapsId
-    private User user;
+    private Person person;
 
-    public Address() {
-    }
 
     public Address(String city, String street) {
-        City = city;
+        this.city = city;
         this.street = street;
-    }
-
-    public Address(String city, String street, User user) {
-        City = city;
-        this.street = street;
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCity() {
-        return City;
-    }
-
-    public void setCity(String city) {
-        City = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override
     public String toString() {
         return "Address{" +
-                "id=" + id +
-                ", City='" + City + '\'' +
+                ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 '}';
     }

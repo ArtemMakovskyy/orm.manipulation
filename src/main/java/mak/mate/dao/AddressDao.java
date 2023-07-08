@@ -1,7 +1,6 @@
 package mak.mate.dao;
 
 import mak.mate.model.Address;
-import mak.mate.model.User;
 
 import java.util.List;
 import java.util.Optional;

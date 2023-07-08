@@ -3,6 +3,7 @@ package mak.mate.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +33,22 @@ public class Person {
     @Column(name = "age")
     private int age;
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    Address address;
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private Passport passport;
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    private Login login;
+
+    public Person(String name, String lastName, int age) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
+    public Person(String name, String lastName, int age, Passport passport) {
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.passport = passport;
+    }
 }

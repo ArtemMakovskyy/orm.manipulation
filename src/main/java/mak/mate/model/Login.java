@@ -6,9 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
@@ -16,28 +13,26 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "passports")
+@Table(name = "logins")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Passport {
+public class Login {
     @Id
     @Column(name = "id")
     private Long id;
-    private String number;
+    private String email;
+    private String password;
+    private byte[] salt;
     @OneToOne()
     @MapsId
     @JoinColumn(name = "id")
     private Person person;
 
-    public Passport(String number) {
-        this.number = number;
-    }
-
     @Override
     public String toString() {
-        return "Passport{" +
-                "number='" + number + '\'' +
+        return
+                "email='" + email + '\'' +
                 '}';
     }
 }

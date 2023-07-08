@@ -1,22 +1,24 @@
 package mak.mate.dao.impl;
 
 import mak.mate.dao.AbstractDao;
-import mak.mate.dao.UserDao;
-import mak.mate.model.User;
+import mak.mate.dao.PassportDao;
+import mak.mate.model.Passport;
+import mak.mate.model.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import java.util.List;
 import java.util.Optional;
 
-public class UserDaoImpl extends AbstractDao implements UserDao {
-    public UserDaoImpl(SessionFactory sessionFactory) {
+public class PassportDaoImpl extends AbstractDao implements PassportDao {
+    public PassportDaoImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
 
     @Override
-    public User add(User entity) {
+    public Passport add(Passport entity) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -28,7 +30,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't create user " + entity);
+            throw new RuntimeException("Can't create person " + entity);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,22 +40,23 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     @Override
-    public Optional<User> getById(Long id) {
+    public Optional<Passport> getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            User user = session.get(User.class, id);
-            return Optional.ofNullable(user);
+            Passport passport = session.get(Passport.class, id);
+            session.createQuery("from Passport p where p.id = :id", Passport.class).setParameter("id",id);
+            return Optional.ofNullable(passport);
         } catch (Exception e) {
-            throw new RuntimeException("Can't get user by id " + id, e);
+            throw new RuntimeException("Can't get passport by id " + id, e);
         }
     }
 
     @Override
-    public List<User> getAll() {
+    public List<Passport> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> fromUser = session.createQuery("from User ", User.class);
-            return fromUser.getResultList();
+            Query<Passport> fromPassport = session.createQuery("from Passport ", Passport.class);
+            return fromPassport.getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Can't  get all users ", e);
+            throw new RuntimeException("Can't  get all passports ", e);
         }
     }
 }
