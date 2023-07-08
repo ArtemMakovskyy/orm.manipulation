@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,9 +36,9 @@ public class Person {
     private int age;
     @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     Address address;
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "person", cascade = CascadeType.ALL)
     private Passport passport;
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "person", cascade = CascadeType.ALL)
     private Login login;
 
     public Person(String name, String lastName, int age) {

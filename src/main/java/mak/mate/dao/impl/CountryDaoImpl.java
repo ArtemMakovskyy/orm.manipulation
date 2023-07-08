@@ -2,10 +2,12 @@ package mak.mate.dao.impl;
 
 import mak.mate.dao.AbstractDao;
 import mak.mate.dao.CountryDao;
+import mak.mate.model.Address;
 import mak.mate.model.Country;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,11 +40,21 @@ public class CountryDaoImpl extends AbstractDao implements CountryDao {
 
     @Override
     public Optional<Country> getById(Long id) {
-        return Optional.empty();
+        try (Session session = sessionFactory.openSession()) {
+            Country country = session.get(Country.class, id);
+            return Optional.ofNullable(country);
+        } catch (Exception e) {
+            throw new RuntimeException("Can't get country by id " + id, e);
+        }
     }
 
     @Override
     public List<Country> getAll() {
-        return null;
+        try (Session session = sessionFactory.openSession()) {
+            Query<Country> fromAddress = session.createQuery("from Country ", Country.class);
+            return fromAddress.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't  get all countryes ", e);
+        }
     }
 }

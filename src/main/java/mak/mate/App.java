@@ -18,6 +18,8 @@ import mak.mate.model.Person;
 import mak.mate.util.HibernateUtil;
 import org.hibernate.SessionFactory;
 
+import java.util.List;
+
 public class App {
     private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     private static AddressDao addressDao = new AddressDaoImpl(sessionFactory);
@@ -55,10 +57,13 @@ public class App {
         login.setPerson(bob);
         loginDao.add(login);
 
-
+        System.out.println( "----------------countryDao >>>>> " +  countryDao.getById(1L));
+        System.out.println( "----------------addressDao >>>>> " +  addressDao.getById(1L));
 
         System.out.println(">>> personDao.getById: >> " + personDao.getById(bob.getId()));
-//        System.out.println(">>> passportDao.getById: >> " + passportDao.getById(passport.getId()));
+        System.out.println(">>> passportDao.getById: >> " + passportDao.getById(passport.getId()));
+        final List<Person> personDaoAll = personDao.getAll();
+        System.out.println(personDaoAll);
         return bob;
     }
 

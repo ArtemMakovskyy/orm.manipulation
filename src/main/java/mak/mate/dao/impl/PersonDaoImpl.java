@@ -41,8 +41,14 @@ public class PersonDaoImpl extends AbstractDao implements PersonDao {
     @Override
     public Optional<Person> getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Person person = session.get(Person.class, id);
-            return Optional.ofNullable(person);
+//            Person person = session.get(Person.class, id);
+//            return Optional.ofNullable(person);
+            Query<Person> fromPerson = session.createQuery("" +
+                            "from Person p " +
+                            "LEFT JOIN FETCH p.address.country " +
+                            "where p.id = :id", Person.class)
+                    .setParameter("id", id);
+            return fromPerson.uniqueResultOptional();
         } catch (Exception e) {
             throw new RuntimeException("Can't get person by id " + id, e);
         }
@@ -51,7 +57,9 @@ public class PersonDaoImpl extends AbstractDao implements PersonDao {
     @Override
     public List<Person> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Person> fromUser = session.createQuery("from Person ", Person.class);
+            Query<Person> fromUser = session.createQuery(
+                    "from Person p LEFT JOIN FETCH p.address.country"
+                    , Person.class);
             return fromUser.getResultList();
         } catch (Exception e) {
             throw new RuntimeException("Can't  get all persons ", e);

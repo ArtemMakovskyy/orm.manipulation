@@ -7,11 +7,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
 import java.util.List;
 import java.util.Optional;
 
 public class AddressDaoImpl extends AbstractDao implements AddressDao {
-
     public AddressDaoImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
     }
@@ -41,8 +41,12 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
     @Override
     public Optional<Address> getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Address address = session.get(Address.class, id);
-            return Optional.ofNullable(address);
+            final Query<Address> id1 = session.createQuery(
+                            "from Address a  " +
+                                    "LEFT JOIN FETCH a.country " +
+                                    "where a.id = : id", Address.class)
+                    .setParameter("id", id);
+            return id1.uniqueResultOptional();
         } catch (Exception e) {
             throw new RuntimeException("Can't get address by id " + id, e);
         }
@@ -51,7 +55,7 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
     @Override
     public List<Address> getAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Address> fromAddress = session.createQuery("from Address ", Address.class);
+            Query<Address> fromAddress = session.createQuery("from Address a ", Address.class);
             return fromAddress.getResultList();
         } catch (Exception e) {
             throw new RuntimeException("Can't  get all addresses ", e);
