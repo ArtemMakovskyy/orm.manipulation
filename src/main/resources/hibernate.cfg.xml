@@ -1,7 +1,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/ticket_app?serverTimeZone=UTC</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/test?serverTimeZone=UTC</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.username">root</property>
         <property name="connection.password">FTOfth96</property>
@@ -10,6 +10,8 @@
 
         <mapping class="mak.mate.model.User"/>
         <mapping class="mak.mate.model.Address"/>
+        <mapping class="mak.mate.model.Person"/>
+        <mapping class="mak.mate.model.Passport"/>
 
     </session-factory>
 </hibernate-configuration>
