@@ -62,7 +62,7 @@ public class App {
 
         System.out.println(">>> personDao.getById: >> " + personDao.getById(bob.getId()));
         System.out.println(">>> passportDao.getById: >> " + passportDao.getById(passport.getId()));
-        final List<Person> personDaoAll = personDao.getAll();
+        List<Person> personDaoAll = personDao.getAll();
         System.out.println(personDaoAll);
         return bob;
     }

@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: /db.changelog/changes/create-person-table.sql
+  - include:
+      file: /db.changelog/changes/insert-person-table.sql

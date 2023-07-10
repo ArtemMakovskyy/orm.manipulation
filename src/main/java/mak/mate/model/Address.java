@@ -3,10 +3,8 @@ package mak.mate.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.CascadeType;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -24,7 +22,8 @@ import javax.persistence.Table;
 public class Address {
     @Id
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.SAVE_UPDATE})
     private Country country;
     private String city;
     private String street;
